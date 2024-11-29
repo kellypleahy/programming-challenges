@@ -12,15 +12,15 @@ public record Field(int FieldNumber, int Rows, int Cols, char[][] Grid)
         {
             if (row == 0)
             {
-                if (line.Split(' ') is [var xString, var yString] 
+                if (line.Split(' ') is [var xString, var yString]
                     && int.TryParse(xString, out rows)
                     && int.TryParse(yString, out cols))
                 {
                     if (rows == 0 && cols == 0)
                         yield break;
-                    grid = Enumerable.Range(0, rows).Select(x => new char[cols]).ToArray();
+                    grid = Enumerable.Range(0, rows).Select(_ => new char[cols]).ToArray();
                 }
-                else 
+                else
                     throw new InvalidDataException("Invalid first line of field.");
 
                 row++;
@@ -43,7 +43,7 @@ public record Field(int FieldNumber, int Rows, int Cols, char[][] Grid)
 
             row++;
         }
-        
+
         throw new InvalidDataException("End of input reached early.");
     }
 

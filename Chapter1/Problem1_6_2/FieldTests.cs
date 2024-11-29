@@ -12,6 +12,13 @@ public class FieldTests
     }
 
     [Fact]
+    public void ParsingFailsOnCompletelyEmpty()
+    {
+        var action = () => Field.ParseFields([]).ToArray();
+        action.Should().Throw<InvalidDataException>().WithMessage("End of input reached early.");
+    }
+
+    [Fact]
     public void CanParseMultipleFields()
     {
         var fields = Field.ParseFields([
@@ -49,5 +56,19 @@ public class FieldTests
     {
         var action = () => Field.ParseFields(["1 1", ".."]).ToArray();
         action.Should().Throw<InvalidDataException>().WithMessage("Invalid number of cells in row*");
+    }
+
+    [Fact]
+    public void Parsing_fails_on_field_size_rows()
+    {
+        var action = () => Field.ParseFields(["abc 1", ".."]).ToArray();
+        action.Should().Throw<InvalidDataException>().WithMessage("Invalid first line of field.");
+    }
+
+    [Fact]
+    public void Parsing_fails_on_field_size_cols()
+    {
+        var action = () => Field.ParseFields(["1 abc", ".."]).ToArray();
+        action.Should().Throw<InvalidDataException>().WithMessage("Invalid first line of field.");
     }
 }
